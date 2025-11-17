@@ -1,3 +1,4 @@
+import sys
 from stats import get_num_words
 from stats import get_num_char
 from stats import sort_dictionary
@@ -8,9 +9,10 @@ def get_book_text(path_to_file):
         file_contents = f.read()
     return file_contents
 
-def print_results(num_words, num_chars):
+#function that prints the results in the desired format
+def print_results(num_words, num_chars, book_path):
     print("============ BOOKBOT ============")
-    print("Analyzing book found at books/frankenstein.txt...")
+    print(f"Analyzing book found at {book_path}")
     print("----------- Word Count ----------")
     print(f"Found {num_words} total words")
     print("--------- Character Count -------")
@@ -21,15 +23,24 @@ def print_results(num_words, num_chars):
 
 
 def main():
-    #gets frankenstein text from dir books
-    book_text = get_book_text("books/frankenstein.txt")
+    #checks to see if number of arguments is equal to two
+    #if not, print a usage message and exit with code 1
+    #if it does, set book_path equal to the provided filepath
+    if(len(sys.argv) != 2):
+        print("Usage: python3 main.py <path_to_book>")
+        sys.exit(1)
+    else:
+        book_path = sys.argv[1]
+    #gets book text from book path
+    book_text = get_book_text(book_path)
     #get number of words in the text
     num_words = get_num_words(book_text)
     #get the number of each character in the text
     num_chars = get_num_char(book_text)
+    #sort the dictionaries by number of times the character appears
     num_chars = sort_dictionary(num_chars)
 
     #print results
-    print_results(num_words, num_chars)
+    print_results(num_words, num_chars, book_path)
 
 main()
